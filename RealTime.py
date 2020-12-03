@@ -2,6 +2,7 @@ import numpy
 from PIL import Image, ImageDraw
 from facenet_pytorch import MTCNN
 import cv2
+import sys
 
 detector = MTCNN(keep_all=True)
 v_cap = cv2.VideoCapture(0)
@@ -17,11 +18,9 @@ while True:
     img_draw = img.copy()
     draw = ImageDraw.Draw(img_draw)
 
-    try:
+    if boxes is not None and points is not None:
         for i, (box, point) in enumerate(zip(boxes, points)):
             draw.rectangle(box.tolist(), width=5)
-    except TypeError:
-        pass
 
     # converting PIL image to CV format
     cvImage = numpy.array(img_draw)
@@ -29,4 +28,5 @@ while True:
 
     cv2.imshow("test", cvImage)
     if cv2.waitKey(1) & 0xFF == ord('g'):
-        break
+        print("Window has closed")
+        sys.exit()
