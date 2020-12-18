@@ -1,14 +1,18 @@
 import numpy
 from PIL import Image, ImageDraw
-from facenet_pytorch import MTCNN
+from facenet_pytorch import MTCNN, InceptionResnetV1
 import cv2
 
 detector = MTCNN(keep_all=True)
+resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
-v_cap = cv2.VideoCapture('1.jpg')
+v_cap = cv2.VideoCapture("god.jpg")
 success, img = v_cap.read()
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 img = Image.fromarray(img)
+
+img_embedding = resnet(detector(img))
+print(img_embedding)
 
 boxes, ignored, points = detector.detect(img, landmarks=True)
 
@@ -25,6 +29,3 @@ cvImage = cvImage[:, :, ::-1].copy()
 
 cv2.imshow("test", cvImage)
 cv2.waitKey(0)
-
-print(img_draw)
-img_draw.show()
