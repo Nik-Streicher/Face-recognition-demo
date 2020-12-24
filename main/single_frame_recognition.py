@@ -15,7 +15,8 @@ detector = MTCNN(keep_all=True)
 
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
-tested_image = Image.open("../images/god/1.jpg")
+tested_image = Image.open("../images/multi/2.jpg")
+
 tested_image_embedding = resnet(detector(tested_image))
 
 database = mysql.connector.connect(
@@ -31,11 +32,17 @@ cursor.execute("SELECT * FROM users")
 result = cursor.fetchall()
 
 users = [[num[0], pickle.loads(num[1].encode('ISO-8859-1')), num[2] == 1] for num in result]
+recognized_users = []
 
-for x in users:
-    if (tested_image_embedding - x[1]).norm().item() < 0.8:
-        print(x[0], x[2])
+for y in tested_image_embedding:
+    for x in users:
+        if (y - x[1]).norm().item() < 0.9:
+            print(x[0], x[2])
+            recognized_users.append(x[0])
 
+recognized_users = list(dict.fromkeys(recognized_users))
+
+print(recognized_users)
 boxes, _ = detector.detect(tested_image)
 
 # Draw bounding box
@@ -48,7 +55,6 @@ my_array = []
 if boxes is not None:
     for box in boxes:
         draw.rectangle(box.tolist(), width=5)
-
 
 # converting PIL image to CV format
 cvImage = numpy.array(img_draw)
