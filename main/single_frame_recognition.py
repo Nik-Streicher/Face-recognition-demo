@@ -51,10 +51,13 @@ draw = ImageDraw.Draw(img_draw)
 # draw.text(xy=(boxes[[0]], boxes[[1]]), text="Hello")
 
 my_array = []
-
+counter = 0
 if boxes is not None:
     for box in boxes:
-        draw.rectangle(box.tolist(), width=5)
+        a, b, _, _ = box
+        draw.text((a + 27, b - 15), recognized_users[counter])
+        counter += 1
+        draw.rectangle(box.tolist(), width=3)
 
 # converting PIL image to CV format
 cvImage = numpy.array(img_draw)
