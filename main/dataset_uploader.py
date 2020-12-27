@@ -49,3 +49,5 @@ for x in users:
     cursor.execute(sql, val)
 
 database.commit()
+
+print("import complete")
