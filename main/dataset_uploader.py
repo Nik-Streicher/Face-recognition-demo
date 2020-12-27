@@ -3,10 +3,8 @@ from facenet_pytorch import MTCNN, InceptionResnetV1
 import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets
-from PIL import Image
 import pickle
 import os
-import cv2
 import ctypes
 
 ctypes.cdll.LoadLibrary('caffe2_nvrtc.dll')
