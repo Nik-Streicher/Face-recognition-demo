@@ -21,9 +21,6 @@ database = mysql.connector.connect(
     database="python_project"
 )
 
-image = cv2.imread("")
-img = Image.open("")
-
 mtcnn = MTCNN(keep_all=True)
 
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
@@ -35,7 +32,7 @@ def collate_fn(x):
     return x[0]
 
 
-dataset = datasets.ImageFolder('../images')
+dataset = datasets.ImageFolder('D:/dataset')
 dataset.idx_to_class = {i: c for c, i in dataset.class_to_idx.items()}
 loader = DataLoader(dataset, collate_fn=collate_fn, num_workers=workers)
 users = []
@@ -52,4 +49,3 @@ for x in users:
     cursor.execute(sql, val)
 
 database.commit()
-
