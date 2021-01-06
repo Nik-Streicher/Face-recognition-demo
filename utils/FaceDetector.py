@@ -38,9 +38,11 @@ def draw_bounding_box(boxes, recognized_users, tested_image, font_path, font_siz
         for box in boxes:
             a, b, c, d = box
             draw.rectangle(box.tolist(), width=3)
-            draw.text((a + 5, b + 3), recognized_users[counter][0], font=font_type)
-            draw.text((c - 43, d - 20), recognized_users[counter][1], font=font_type)
-            counter += 1
+
+            if (counter + 1) <= len(recognized_users):
+                draw.text((a + 5, b + 3), recognized_users[counter][0], font=font_type)
+                draw.text((c - 43, d - 20), recognized_users[counter][1], font=font_type)
+                counter += 1
 
     return img_draw
 

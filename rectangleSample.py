@@ -6,7 +6,7 @@ import cv2
 detector = MTCNN(keep_all=True)
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
-v_cap = cv2.VideoCapture("god.jpg")
+v_cap = cv2.VideoCapture(0)
 success, img = v_cap.read()
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 img = Image.fromarray(img)
