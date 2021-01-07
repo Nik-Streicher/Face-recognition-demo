@@ -1,6 +1,6 @@
 from utils.FaceDetector import FaceDetector
 from utils.Loader import Loader
-from utils.MysqlConnector import MysqlConnector
+from utils.MysqlConnector import MysqlConnector, decode
 
 detector = FaceDetector()
 
