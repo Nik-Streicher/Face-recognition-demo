@@ -6,7 +6,7 @@ detector = FaceDetector()
 
 mysql = MysqlConnector(host="localhost", user="python_user", password="password", database="python_project")
 
-loader = Loader('D:/dataset')
+loader = Loader(dataset_path='D:/dataset')
 
 users = []
 

@@ -7,10 +7,12 @@ import ctypes
 ctypes.cdll.LoadLibrary('caffe2_nvrtc.dll')
 
 
-def recognize_users(tested_image_embedding, users, distance):
+# return list of recognized users in format -> [name, access]
+# "distance" defines the distance between the recognized faces.
+def recognize_users(face_embedding, users, distance):
     recognized_users = []
 
-    for y in tested_image_embedding:
+    for y in face_embedding:
         flag = True
         recognized_user = []
         for x in users:
@@ -28,8 +30,9 @@ def recognize_users(tested_image_embedding, users, distance):
     return recognized_users
 
 
-def draw_bounding_box(boxes, recognized_users, tested_image, font_path, font_size):
-    img_draw = tested_image.copy()
+# draw bounding box, name and access status
+def draw_bounding_box(boxes, recognized_users, pil_image, font_path, font_size):
+    img_draw = pil_image.copy()
     font_type = ImageFont.truetype(font_path, font_size)
     draw = ImageDraw.Draw(img_draw)
 
@@ -47,14 +50,15 @@ def draw_bounding_box(boxes, recognized_users, tested_image, font_path, font_siz
     return img_draw
 
 
+# converts PIL image to CV format
 def convert_to_cv(pil_image):
-    # converting PIL image to CV format
     cvImage = numpy.array(pil_image)
     return cvImage[:, :, ::-1].copy()
 
 
 class FaceDetector:
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    print(device)
 
     mtcnn = MTCNN(keep_all=True, device=device)
     resnet = InceptionResnetV1(pretrained='vggface2').eval()
